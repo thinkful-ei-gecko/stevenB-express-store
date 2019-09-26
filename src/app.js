@@ -25,6 +25,10 @@ app.post('/', ( req, res ) => {
   res.send('POST request received');
 });
 
+app.post('/user', ( req, res ) => {
+  const { username, password, favoriteClub, newsLetter = false } = req.body;
+});
+
 app.use(function errorHandler( error, req, res, next ) {
   let response;
   if(NODE_ENV === 'production') {
