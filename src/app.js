@@ -12,10 +12,16 @@ const morganOption = (NODE_ENV === 'production')
   : 'common';
 
 app.use(morgan(morganOption));
+app.use(express.json());
 app.use(helmet());
 app.use(cors());
 
+app.get('/', ( req, res ) => {
+  res.send('GET request received');
+});
+
 app.post('/', ( req, res ) => {
+  console.log(req.body);
   res.send('POST request received');
 });
 
