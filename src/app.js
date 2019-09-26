@@ -3,6 +3,7 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
+const uuid = require('uuid/v4');
 const { NODE_ENV } = require('./config');
 
 const app = express();
@@ -81,7 +82,34 @@ app.post('/user', ( req, res ) => {
     return res.status(400).send('Not a valid club');
   }
 
-  res.send('All validation passed');
+  const id = uuid();
+  const newUser = {
+    id,
+    username,
+    password,
+    favoriteClub,
+    newsLetter
+  };
+
+  users.push(newUser);
+
+  res.status(201).location(`http://localhost:8000/user/${id}`).json({id: id});
+});
+
+app.delete('/user/:userId', (req, res) => {
+  const { userId } = req.params;
+
+  const index = users.findIndex(u => u.id === userId);
+
+  if (index === -1) {
+    return res
+      .status(404)
+      .send('User not found');
+  }
+
+  users.splice(index, 1);
+
+  res.send('Deleted');
 });
 
 app.use(function errorHandler( error, req, res, next ) {
