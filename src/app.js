@@ -51,7 +51,20 @@ app.post('/user', ( req, res ) => {
   if (!password.match(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/)) {
     return res.status(400).send('Password must contain at least one digit');
   }
-  
+
+  const clubs = [
+    'Cache Valley Stone Society',
+    'Ogden Curling Club',
+    'Park City Curling Club',
+    'Salt City Curling Club',
+    'Utah Olympic Oval Curling Club'
+  ];
+
+  if (!clubs.includes(favoriteClub)) {
+    return res.status(400).send('Not a valid club');
+  }
+
+  res.send('All validation passed');
 });
 
 app.use(function errorHandler( error, req, res, next ) {
